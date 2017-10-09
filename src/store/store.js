@@ -5,11 +5,14 @@ import { run } from '@cycle/run';
 import { makeHTTPDriver } from '@cycle/http';
 import { timeDriver } from '@cycle/time';
 
+import combinedCycle from '../cycles/cycle';
+import postsReducer from './posts.reducer';
+
 const cycleMiddleware = createCycleMiddleware();
 const { makeActionDriver, makeStateDriver } = cycleMiddleware;
 
 const store = createStore(combineReducers(
-  { dummy: state => state || {} }),
+  { posts: postsReducer }),
   {},
   applyMiddleware(cycleMiddleware));
 
@@ -22,17 +25,7 @@ function attachCycle(cycle) {
   });
 }
 
-function main(sources) {
-  const pong$ = sources.ACTION
-    .filter(action => action.type === 'PING')
-    .mapTo({ type: 'PONG' })
-    .debug();
 
-  return {
-    ACTION: pong$,
-  };
-}
-
-attachCycle(main);
+attachCycle(combinedCycle);
 
 export default store;
