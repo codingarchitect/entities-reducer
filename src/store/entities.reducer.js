@@ -88,5 +88,5 @@ export default function makeReducer(params) {
     return handler ? handler(state, action, params.lenses) :
       state;
   };
-  return injectReducer(params.store, { key: 'entities.posts', reducer });
+  return injectReducer(params.store, { key: `entities.${params.reducerKey}`, reducer });
 }

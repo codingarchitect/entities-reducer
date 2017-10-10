@@ -24,6 +24,18 @@ const postError = {
   },
 };
 
+const comment1 = {
+  status: 'complete',
+  byId: {
+    1: { id: 1, body: 'some comment', postId: 1 },
+  },
+  allIds: [1],
+  message: {
+    type: 'success',
+    text: 'Loaded',
+  },
+};
+
 const blog = {
   posts: [
     { id: 1, title: 'json-server', author: 'typicode' },
@@ -37,5 +49,6 @@ const blog = {
 export default {
   post1,
   postError,
+  comment1,
   blog,
 };

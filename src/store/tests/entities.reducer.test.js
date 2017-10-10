@@ -1,6 +1,7 @@
 import createStore from '../store';
 import { initialState } from '../entities.reducer';
 import makePostsReducer from './posts.reducer-test-data';
+import makeCommentsReducer from './comments.reducer-test-data';
 import testData from './blog-test-data';
 import registerCycles from '../../cycles/cycle';
 import mockSuperAgent from '../../utils/super-agent';
@@ -18,6 +19,7 @@ describe('makeReducer', () => {
     store = createStore();
     registerCycles(store);    
     postsReducer = makePostsReducer(store);
+    makeCommentsReducer(store);
   });
   it('should use initialState when no state is provided', () => {
     const state = postsReducer(undefined, {});
@@ -48,6 +50,18 @@ describe('makeReducer', () => {
     });
     store.dispatch({ type: 'LOAD_POSTS', payload: 1 });    
   });
+  it('should ensure store isolation', (done) => {
+    unsubscribe = store.subscribe(() => {
+      const currentState = store.getState();
+      if (currentState.entities && currentState.entities.comments &&
+        currentState.entities.comments.byId && currentState.entities.comments.byId[1]) {
+        expect(currentState.entities.comments).toEqual(testData.comment1);
+        done();
+      }
+    });
+    store.dispatch({ type: 'LOAD_POSTS', payload: 1 });    
+    store.dispatch({ type: 'LOAD_COMMENTS', payload: 1 });    
+  });
   it('should set errorMessage for failed actions', (done) => {
     unsubscribe = store.subscribe(() => {
       const currentState = store.getState();
@@ -67,5 +81,6 @@ describe('makeReducer', () => {
       unsubscribe = undefined;
     }
     store.dispatch({ type: 'CLEAR_POSTS' });
+    store.dispatch({ type: 'CLEAR_COMMENTS' });
   });
 });

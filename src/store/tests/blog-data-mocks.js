@@ -12,6 +12,9 @@ export default function fixtures(match) {
         },
       };
     }
+    case '/comments/1': {
+      return testData.blog.comments.find(c => c.id === 1);
+    }
     default:
       break;
   }

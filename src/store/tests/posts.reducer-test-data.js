@@ -17,6 +17,7 @@ const makePostsReducer = store => makeReducer({
     },
   },
   type: 'single-entity',
+  reducerKey: 'posts',
   store,
 });
 

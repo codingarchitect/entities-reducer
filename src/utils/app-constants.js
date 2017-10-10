@@ -5,6 +5,7 @@ export default {
     urls: {
       base: baseUrl,
       posts: `${baseUrl}/posts/`,
+      comments: `${baseUrl}/comments/`,
     },
   },
 };
