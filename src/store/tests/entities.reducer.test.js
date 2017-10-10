@@ -1,6 +1,6 @@
 import createStore from '../store';
 import { initialState } from '../entities.reducer';
-import makePostsReducer from '../posts.reducer';
+import makePostsReducer from './posts.reducer-test-data';
 import testData from './blog-test-data';
 import registerCycles from '../../cycles/cycle';
 import mockSuperAgent from '../../utils/super-agent';
