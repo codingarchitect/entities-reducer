@@ -1,4 +1,5 @@
 import { lensPath, set, view } from 'ramda';
+import { injectReducer } from './reducer';
 
 export const initialState = {
   status: 'not-started',
@@ -25,6 +26,7 @@ const handleAllIds = (state, entity, lenses) => {
 
 const completedHandler =
   (state, action, lenses) => {
+    debugger;
     const payload = view(lensPath(lenses.actionPayload[action.type]));
     const newState = handleById(state, payload(action), lenses);
     return {
@@ -82,9 +84,10 @@ const makeHandlers = (params) => {
 
 export default function makeReducer(params) {
   const handlers = makeHandlers(params);
-  return (state = params.initialState, action) => {
+  const reducer = (state = params.initialState, action) => {
     const handler = handlers[action.type];
     return handler ? handler(state, action, params.lenses) :
       state;
   };
+  return injectReducer(params.store, { key: 'entities.posts', reducer });
 }

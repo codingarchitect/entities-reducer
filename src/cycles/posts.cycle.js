@@ -17,7 +17,8 @@ export default function main(sources) {
     .flatten()
     .map(res => (res.error ?
       { type: 'LOAD_POSTS_ERROR', payload: res.error.message } :
-      { type: 'LOAD_POSTS_COMPLETED', payload: res.body }));
+      { type: 'LOAD_POSTS_COMPLETED', payload: res.body }))
+    .debug();
 
   return {
     ACTION: response$,

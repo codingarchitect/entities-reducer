@@ -1,7 +1,16 @@
-import postsReducer, { initialState } from './posts.reducer';
-import store from './store';
+import createStore from './store';
+import { initialState } from './entities.reducer';
+import makePostsReducer from './posts.reducer';
+import testData from './entities.reducer.test-data';
+import registerCycles from '../cycles/cycle';
 
 describe('makeReducer', () => {
+  let unsubscribe, currentState, store, postsReducer;
+  beforeAll(() => {
+    store = createStore();
+    registerCycles(store);    
+    postsReducer = makePostsReducer(store);    
+  });
   it('should use initialState when no state is provided', () => {
     const state = postsReducer(undefined, {});
     expect(state).toEqual(initialState);
@@ -19,27 +28,14 @@ describe('makeReducer', () => {
     state =  postsReducer(state, { type: 'CLEAR_POSTS' });
     expect(state).toEqual(initialState);
   });
-  let unsubscribe, currentState;
+  
   it('should set entities for load completed actions', (done) => {
     store.dispatch({ type: 'LOAD_POSTS', payload: 1 });
     unsubscribe = store.subscribe(() => {
       const currentState = store.getState();
-      if (currentState.posts && currentState.posts.byId && currentState.posts.byId[1]) {
-        expect(currentState.posts).toEqual({
-          status: 'complete',
-          byId: {
-            1: {
-              id: 1,
-              title: 'json-server',
-              author: 'typicode',
-            },
-          },
-          allIds: [1],
-          message: {
-            type: 'success',
-            text: 'Loaded',
-          },
-        });
+      if (currentState.entities && currentState.entities.posts &&
+        currentState.entities.posts.byId && currentState.entities.posts.byId[1]) {
+        expect(currentState.entities.posts).toEqual(testData.post1);
         done();
       }
     });
@@ -48,16 +44,9 @@ describe('makeReducer', () => {
     store.dispatch({ type: 'LOAD_POSTS', payload: 2 });
     unsubscribe = store.subscribe(() => {
       const currentState = store.getState();
-      if (currentState.posts && currentState.posts.message) {
-        expect(currentState.posts).toEqual({
-          status: 'error',
-          byId: {},
-          allIds: [],
-          message: {
-            type: 'error',
-            text: 'cannot GET /posts/2 (404)',
-          },
-        });
+      if (currentState.entities && currentState.entities.posts &&
+        currentState.entities.posts.message) {
+        expect(currentState.entities.posts).toEqual(testData.postError);
         done();
       }
     });        

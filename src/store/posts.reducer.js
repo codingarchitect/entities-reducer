@@ -1,6 +1,6 @@
 import makeReducer, { initialState } from './entities.reducer';
 
-const postsReducer = makeReducer({
+const makePostsReducer = store => makeReducer({
   actions: {
     load: ['LOAD_POSTS'],
     loadCompleted: ['LOAD_POSTS_COMPLETED'],
@@ -17,6 +17,7 @@ const postsReducer = makeReducer({
     },
   },
   type: 'single-entity',
+  store,
 });
 
-export default postsReducer;
+export default makePostsReducer;
