@@ -1,0 +1,31 @@
+{
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [{
+    "name": "Chrome",
+    "type": "chrome",
+    "request": "launch",
+    "url": "http://localhost:8080",
+    "webRoot": "${workspaceRoot}/www",
+    "userDataDir": "${workspaceRoot}/.vscode/chrome",
+    "preLaunchTask": "webpack dev",
+    "sourceMapPathOverrides": {
+      "webpack:///src/*": "${webRoot}/*"
+    }
+  }, {
+    "type": "node",
+    "request": "launch",
+    "name": "Jest Tests",
+    "program": "${workspaceRoot}\\node_modules\\jest\\bin\\jest.js",
+    "args": [ "-i" ],
+    /* Without this line below the vscode embedded node version is used */
+    /* with this line the node.js installed is used */
+    "runtimeExecutable": "node.exe",
+    "internalConsoleOptions": "openOnSessionStart",
+    "outFiles": [ "${workspaceRoot}/public/**/*" ],
+    "sourceMaps": false,
+    "console": "integratedTerminal"
+  }]
+}

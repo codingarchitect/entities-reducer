@@ -26,7 +26,6 @@ const handleAllIds = (state, entity, lenses) => {
 
 const completedHandler =
   (state, action, lenses) => {
-    debugger;
     const payload = view(lensPath(lenses.actionPayload[action.type]));
     const newState = handleById(state, payload(action), lenses);
     return {

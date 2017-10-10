@@ -1,10 +1,11 @@
 import xs from 'xstream';
+import AppConstants from '../utils/app-constants';
 
 export default function main(sources) {
   const request$ = sources.ACTION
     .filter(action => action.type === 'LOAD_POSTS')
     .map(action => ({
-      url: `http://localhost:3000/posts/${action.payload}`,
+      url: `${AppConstants.service.urls.posts}${action.payload}`,
       category: 'posts',
     }));
 
@@ -17,8 +18,7 @@ export default function main(sources) {
     .flatten()
     .map(res => (res.error ?
       { type: 'LOAD_POSTS_ERROR', payload: res.error.message } :
-      { type: 'LOAD_POSTS_COMPLETED', payload: res.body }))
-    .debug();
+      { type: 'LOAD_POSTS_COMPLETED', payload: res.body }));
 
   return {
     ACTION: response$,

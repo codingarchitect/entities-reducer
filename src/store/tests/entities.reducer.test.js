@@ -1,15 +1,23 @@
-import createStore from './store';
-import { initialState } from './entities.reducer';
-import makePostsReducer from './posts.reducer';
-import testData from './entities.reducer.test-data';
-import registerCycles from '../cycles/cycle';
+import createStore from '../store';
+import { initialState } from '../entities.reducer';
+import makePostsReducer from '../posts.reducer';
+import testData from './blog-test-data';
+import registerCycles from '../../cycles/cycle';
+import mockSuperAgent from '../../utils/super-agent';
+import AppConstants from '../../utils/app-constants';
+import fixtures from './blog-data-mocks';
 
 describe('makeReducer', () => {
   let unsubscribe, currentState, store, postsReducer;
   beforeAll(() => {
+    mockSuperAgent([{
+      pattern: `${AppConstants.service.urls.base}(.*)`,
+      fixtures,
+      callback: (match, data) => (data.error ? { error: data.error } : { body: data }),
+    }]);
     store = createStore();
     registerCycles(store);    
-    postsReducer = makePostsReducer(store);    
+    postsReducer = makePostsReducer(store);
   });
   it('should use initialState when no state is provided', () => {
     const state = postsReducer(undefined, {});
@@ -30,7 +38,6 @@ describe('makeReducer', () => {
   });
   
   it('should set entities for load completed actions', (done) => {
-    store.dispatch({ type: 'LOAD_POSTS', payload: 1 });
     unsubscribe = store.subscribe(() => {
       const currentState = store.getState();
       if (currentState.entities && currentState.entities.posts &&
@@ -39,17 +46,19 @@ describe('makeReducer', () => {
         done();
       }
     });
+    store.dispatch({ type: 'LOAD_POSTS', payload: 1 });    
   });
   it('should set errorMessage for failed actions', (done) => {
-    store.dispatch({ type: 'LOAD_POSTS', payload: 2 });
     unsubscribe = store.subscribe(() => {
       const currentState = store.getState();
       if (currentState.entities && currentState.entities.posts &&
-        currentState.entities.posts.message) {
+        currentState.entities.posts.message &&
+        currentState.entities.posts.message.type === 'error') {
         expect(currentState.entities.posts).toEqual(testData.postError);
         done();
       }
     });        
+    store.dispatch({ type: 'LOAD_POSTS', payload: 2 });    
   });
   afterEach(() => {
     currentState = undefined;

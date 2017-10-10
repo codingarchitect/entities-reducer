@@ -5,13 +5,11 @@ export default function main(sources) {
       url: 'http://localhost:3000/comments',
       category: 'comments',
     }))
-    .debug();
 
   const response$ = sources.HTTP
     .select('comments')
     .flatten()
-    .map(res => ({ type: 'LOAD_COMMENTS_COMPLETED', payload: res.body }))
-    .debug();
+    .map(res => ({ type: 'LOAD_COMMENTS_COMPLETED', payload: res.body }));
 
   return {
     ACTION: response$,
