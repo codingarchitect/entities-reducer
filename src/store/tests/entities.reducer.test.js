@@ -50,6 +50,21 @@ describe('makeReducer', () => {
     });
     store.dispatch({ type: 'LOAD_POSTS', payload: 1 });    
   });
+  it('should not modify state if entity is loaded already', (done) => {
+    let callCount = 0;
+    unsubscribe = store.subscribe(() => {
+      const currentState = store.getState();
+      if (currentState.entities && currentState.entities.posts &&
+        currentState.entities.posts.byId && currentState.entities.posts.byId[1]) {
+        callCount++;
+        if (callCount === 3) {
+          done();
+        }
+      }
+    });
+    store.dispatch({ type: 'LOAD_POSTS', payload: 1 });
+    store.dispatch({ type: 'LOAD_POSTS', payload: 1 });
+  });
   it('should ensure store isolation', (done) => {
     unsubscribe = store.subscribe(() => {
       const currentState = store.getState();
