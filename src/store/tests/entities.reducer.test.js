@@ -3,7 +3,7 @@ import { initialState } from '../entities.reducer';
 import makePostsReducer from './posts.reducer-test-data';
 import makeCommentsReducer from './comments.reducer-test-data';
 import testData from './blog-test-data';
-import registerCycles from '../../cycles/cycle';
+import registerCycles from './cycles/cycle';
 import mockSuperAgent from '../../utils/super-agent';
 import AppConstants from '../../utils/app-constants';
 import fixtures from './blog-data-mocks';
