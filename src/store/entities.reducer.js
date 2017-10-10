@@ -1,5 +1,15 @@
 import { lensPath, set, view } from 'ramda';
 
+export const initialState = {
+  status: 'not-started',
+  byId: {},
+  allIds: [],
+  message: {
+    type: 'none',
+    text: '',
+  },
+};
+
 const entityExists = (allIds, id) => allIds.indexOf(id) !== -1;
 
 const handleById = (state, entity, lenses) => {

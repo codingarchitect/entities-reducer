@@ -1,14 +1,4 @@
-import makeReducer from './entities.reducer';
-
-export const initialState = {
-  status: 'not-started',
-  byId: {},
-  allIds: [],
-  message: {
-    type: 'none',
-    text: '',
-  },
-};
+import makeReducer, { initialState } from './entities.reducer';
 
 const postsReducer = makeReducer({
   actions: {
