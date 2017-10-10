@@ -1,4 +1,5 @@
-import makeReducer, { initialState } from '../entities.reducer';
+import makeReducer from '../entities.reducer';
+import initialState from '../entities.reducer.initial-state';
 
 const makePostsReducer = store => makeReducer({
   actions: {
