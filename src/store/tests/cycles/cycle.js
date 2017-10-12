@@ -1,10 +1,9 @@
 import { combineCycles } from 'redux-cycles';
 import postsCycle from './posts.cycle';
 import commentsCycle from './comments.cycle';
-import pingPongCycle from './ping-pong-cycle';
 import { injectCycle } from '../../reducer';
 
-const cycle = combineCycles(postsCycle, commentsCycle, pingPongCycle);
+const cycle = combineCycles(postsCycle, commentsCycle);
 
 /* eslint fp/no-nil: 1 */
 /* eslint better/explicit-return: 1 */
